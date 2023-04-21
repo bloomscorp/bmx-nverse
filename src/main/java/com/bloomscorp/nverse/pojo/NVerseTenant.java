@@ -6,13 +6,11 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-public class NVerseTenant<E extends Enum<E>> {
-	private String email;
-	private String password;
-	private boolean active = true;
-	private boolean deleted = false;
-	private boolean suspended = false;
-	private List<NVerseRole<E>> roles;
+public interface NVerseTenant<E extends Enum<E>> {
+	String getEmail();
+	String getPassword();
+	boolean isActive();
+	boolean isDeleted();
+	boolean isSuspended();
+	List<NVerseRole<E>> getRoles();
 }
