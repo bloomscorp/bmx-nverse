@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class NVerseJWTService<
-	U extends NVerseUser<T, E>,
 	T extends NVerseTenant<E>,
 	E extends Enum<E>
 > {
@@ -34,7 +33,7 @@ public class NVerseJWTService<
 		this.secret = secret;
 	}
 
-	public String generateToken(@NotNull U user) {
+	public String generateToken(@NotNull NVerseUser<T, E> user) {
 		return this.generateToken(new HashMap<>(), user.getUsername());
 	}
 

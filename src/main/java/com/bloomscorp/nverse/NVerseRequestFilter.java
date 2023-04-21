@@ -23,12 +23,11 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class NVerseRequestFilter<
-	U extends NVerseUser<T, E>,
 	T extends NVerseTenant<E>,
 	E extends Enum<E>
 > extends OncePerRequestFilter {
 
-	private final NVerseJWTService<U, T, E> jwtService;
+	private final NVerseJWTService<T, E> jwtService;
 	private final NVerseUserDetailsService<T, E> userDetailsService;
 
 	@Override
