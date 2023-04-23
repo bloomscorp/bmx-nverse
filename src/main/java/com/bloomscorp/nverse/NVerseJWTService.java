@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+@AllArgsConstructor
 public class NVerseJWTService<
 	T extends NVerseTenant<E>,
 	E extends Enum<E>
@@ -24,10 +26,6 @@ public class NVerseJWTService<
 	private static final long JWT_TOKEN_VALIDITY = 168 * 60 * 60000;
 
 	private final String secret;
-
-	public NVerseJWTService(String secret) {
-		this.secret = secret;
-	}
 
 	public String generateToken(@NotNull NVerseUser<T, E> user) {
 		return this.generateToken(new HashMap<>(), user.getUsername());
