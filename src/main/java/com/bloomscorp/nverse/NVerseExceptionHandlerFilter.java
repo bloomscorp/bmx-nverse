@@ -1,7 +1,12 @@
 package com.bloomscorp.nverse;
 
+import com.bloomscorp.alfred.cron.CronManager;
+import com.bloomscorp.alfred.orm.AuthenticationLog;
+import com.bloomscorp.alfred.orm.Log;
+import com.bloomscorp.alfred.support.ReporterID;
 import com.bloomscorp.hastar.AuthorizationException;
 import com.bloomscorp.hastar.CarrierException;
+import com.bloomscorp.nverse.pojo.NVerseTenant;
 import com.bloomscorp.nverse.support.Constant;
 import com.bloomscorp.nverse.support.Message;
 import com.bloomscorp.raintree.RainTree;
@@ -25,10 +30,15 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @AllArgsConstructor
-public class NVerseExceptionHandlerFilter extends OncePerRequestFilter {
+public class NVerseExceptionHandlerFilter<
+	L extends Log,
+	A extends AuthenticationLog,
+	T extends NVerseTenant<E>,
+	E extends Enum<E>
+> extends OncePerRequestFilter {
 
 	private final RainTree rainTree;
-//	private final CronManager cron;
+	private final CronManager<L, A, T, E> cron;
 	private final boolean isProduction;
 
 	@Override
@@ -138,15 +148,15 @@ public class NVerseExceptionHandlerFilter extends OncePerRequestFilter {
 
 			this.prepareResponseForException(httpServletResponse, rainTree.failureResponse());
 		} finally {
-//			if(exceptionThrown)
-//				this.cron.scheduleExceptionLogTask(
-//					exception,
-//					exception.getMessage(),
-//					ReporterID.prepareID(
-//						this.getClass().getName(),
-//						methodName
-//					)
-//				);
+			if(exceptionThrown)
+				this.cron.scheduleExceptionLogTask(
+					exception,
+					exception.getMessage(),
+					ReporterID.prepareID(
+						this.getClass().getName(),
+						methodName
+					)
+				);
 		}
 	}
 
