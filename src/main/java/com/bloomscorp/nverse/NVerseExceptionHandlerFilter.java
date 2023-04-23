@@ -1,5 +1,6 @@
 package com.bloomscorp.nverse;
 
+import com.bloomscorp.alfred.LogBook;
 import com.bloomscorp.alfred.cron.CronManager;
 import com.bloomscorp.alfred.orm.AuthenticationLog;
 import com.bloomscorp.alfred.orm.Log;
@@ -18,19 +19,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @AllArgsConstructor
 public class NVerseExceptionHandlerFilter<
+	B extends LogBook<L, A, T, E>,
 	L extends Log,
 	A extends AuthenticationLog,
 	T extends NVerseTenant<E>,
@@ -38,7 +38,7 @@ public class NVerseExceptionHandlerFilter<
 > extends OncePerRequestFilter {
 
 	private final RainTree rainTree;
-	private final CronManager<L, A, T, E> cron;
+	private final CronManager<B, L, A, T, E> cron;
 	private final boolean isProduction;
 
 	@Override
