@@ -15,14 +15,15 @@ public class NVerseEmailEncoder {
 
 	public NVerseEmailEncoder(
 		String encoderKey,
-		NVerseEmailValidator validator
+		NVerseEmailValidator validator,
+		String algorithm
 	) {
 
 		this.validator = validator;
 
 		NVerseAES localAES;
 
-		try { localAES = new NVerseAES(encoderKey); }
+		try { localAES = new NVerseAES(encoderKey, algorithm); }
 		catch(NoSuchAlgorithmException e) { localAES = null; }
 
 		this.nVerseAES = localAES;

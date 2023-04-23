@@ -17,12 +17,18 @@ import java.util.Base64;
 
 public class NVerseAES {
 
+	/*
+	 * For other algorithms, visit:
+	 * https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#MessageDigest
+	 */
+
+	public static final String SHA256 = "SHA-256";
+	public static final String SHA512 = "SHA-512";
+
 	private final SecretKeySpec secretKey;
 
-	public NVerseAES(@NotNull String keySequence) throws NoSuchAlgorithmException {
-
-		// TODO: Upgrade algorithm to SHA-512 (https://docs.oracle.com/javase/7/docs/technotes/guides/security/StandardNames.html#MessageDigest)
-		MessageDigest SHA = MessageDigest.getInstance("SHA-256");
+	public NVerseAES(@NotNull String keySequence, String algorithm) throws NoSuchAlgorithmException {
+		MessageDigest SHA = MessageDigest.getInstance(algorithm);
 		byte[] key = Arrays.copyOf(SHA.digest(keySequence.getBytes(StandardCharsets.UTF_8)), 16);
 		this.secretKey = new SecretKeySpec(key, "AES");
 	}
