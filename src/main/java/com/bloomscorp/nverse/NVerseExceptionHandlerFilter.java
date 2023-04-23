@@ -24,7 +24,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@AllArgsConstructor(onConstructor = @__({@Autowired}))
+@AllArgsConstructor
 public class NVerseExceptionHandlerFilter extends OncePerRequestFilter {
 
 	private final RainTree rainTree;
