@@ -25,4 +25,6 @@ public final class Constant {
     public static final String HEADER_X_REQUESTED_WITH = "X-Requested-With";
     public static final String HEADER_ALTERNATES = "Alternates";
     public static final String HEADER_DESCRIPTION = "Content-Description";
+
+    public static final String RESPONSE_TYPE_APPLICATION_JSON = "application/json";
 }
