@@ -1,10 +1,6 @@
 package com.bloomscorp.nverse;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.stereotype.Component;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -30,11 +26,6 @@ public class NVerseEmailEncoder {
 		catch(NoSuchAlgorithmException e) { localAES = null; }
 
 		this.nVerseAES = localAES;
-	}
-
-	public NVerseEmailEncoder(NVerseAES nVerseAES, NVerseEmailValidator validator) {
-		this.nVerseAES = nVerseAES;
-		this.validator = validator;
 	}
 
 	public String encode(final String email) throws NoSuchAlgorithmException,

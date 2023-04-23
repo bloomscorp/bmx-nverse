@@ -1,11 +1,8 @@
 package com.bloomscorp.nverse;
 
-import com.bloomscorp.nverse.support.Constant;
 import org.jetbrains.annotations.NotNull;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.ValidationException;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Service;
 
 public class NVerseEmailValidator {
 
