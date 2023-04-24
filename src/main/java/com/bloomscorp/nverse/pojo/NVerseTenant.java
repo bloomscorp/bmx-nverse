@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface NVerseTenant<E extends Enum<E>> {
 	Long getId();
+	String getUid();
 	String getEmail();
 	String getPassword();
 	boolean isActive();
