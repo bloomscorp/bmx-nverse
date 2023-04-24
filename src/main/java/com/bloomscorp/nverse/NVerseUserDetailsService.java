@@ -34,7 +34,9 @@ public class NVerseUserDetailsService<
 		}
 	}
 
-	public UserDetails loadUserByEncryptedUsername(String username) throws UsernameNotFoundException {
+	public NVerseUser<T, E> loadNVerseUserByEncryptedUsername(
+		String username
+	) throws UsernameNotFoundException {
 		// TODO what happens when one valid user uses token of another valid user
 		// TODO: handle UsernameNotFoundException. Where is it thrown? Handle in GlobalExceptionHandler?
 		try {
@@ -64,6 +66,10 @@ public class NVerseUserDetailsService<
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(username);
 		}
+	}
+
+	public UserDetails loadUserByEncryptedUsername(String username) throws UsernameNotFoundException {
+		return this.loadNVerseUserByEncryptedUsername(username);
 	}
 
 	@Contract("_ -> new")
