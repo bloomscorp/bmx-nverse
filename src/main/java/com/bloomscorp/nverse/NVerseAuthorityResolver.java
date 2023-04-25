@@ -1,14 +1,19 @@
 package com.bloomscorp.nverse;
 
 import com.bloomscorp.hastar.AuthorizationException;
+import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public class NVerseAuthorityResolver<T extends NVerseTenant<E>, E extends Enum<E>> {
+public class NVerseAuthorityResolver<
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
+> {
 
-	private final NVerseJWTService<T, E> jwtService;
-	private final NVerseUserDetailsService<T, E> userDetailsService;
+	private final NVerseJWTService<T, E, R> jwtService;
+	private final NVerseUserDetailsService<T, E, R> userDetailsService;
 
 	public T resolveUserInformationFromAuthorizationToken(String authorizationToken) {
 

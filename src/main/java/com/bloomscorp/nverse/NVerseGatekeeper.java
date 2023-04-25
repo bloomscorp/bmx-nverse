@@ -9,12 +9,16 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @AllArgsConstructor
-public abstract class NVerseGatekeeper<T extends NVerseTenant<E>, E extends Enum<E>> {
+public abstract class NVerseGatekeeper<
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
+> {
 
 	private static final String ROLE_GOD_MODE = "ROLE_GOD_MODE";
 	private static final String ROLE_SUPER_USER = "ROLE_SUPER_USER";
 
-	private final NVerseSecureLayer<T, E> secureLayer;
+	private final NVerseSecureLayer<T, E, R> secureLayer;
 
 	private boolean roleGOD(@NotNull T user) {
 		return user

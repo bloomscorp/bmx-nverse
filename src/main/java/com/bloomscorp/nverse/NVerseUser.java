@@ -13,8 +13,9 @@ import java.util.stream.Collectors;
 @Getter
 @ToString
 public class NVerseUser<
-	T extends NVerseTenant<E>,
-	E extends Enum<E>
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
 > extends User {
 
 	private final T tenant;

@@ -1,5 +1,6 @@
 package com.bloomscorp.nverse;
 
+import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,15 +20,16 @@ import java.util.function.Function;
 
 @AllArgsConstructor
 public class NVerseJWTService<
-	T extends NVerseTenant<E>,
-	E extends Enum<E>
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
 > {
 
 	private static final long JWT_TOKEN_VALIDITY = 168 * 60 * 60000;
 
 	private final String secret;
 
-	public String generateToken(@NotNull NVerseUser<T, E> user) {
+	public String generateToken(@NotNull NVerseUser<T, E, R> user) {
 		return this.generateToken(new HashMap<>(), user.getUsername());
 	}
 

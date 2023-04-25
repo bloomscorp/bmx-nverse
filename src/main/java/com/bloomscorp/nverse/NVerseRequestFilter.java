@@ -1,6 +1,7 @@
 package com.bloomscorp.nverse;
 
 import com.bloomscorp.hastar.AuthorizationException;
+import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
 import com.bloomscorp.nverse.support.Constant;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,12 +22,13 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class NVerseRequestFilter<
-	T extends NVerseTenant<E>,
-	E extends Enum<E>
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
 > extends OncePerRequestFilter {
 
-	private final NVerseJWTService<T, E> jwtService;
-	private final NVerseUserDetailsService<T, E> userDetailsService;
+	private final NVerseJWTService<T, E, R> jwtService;
+	private final NVerseUserDetailsService<T, E, R> userDetailsService;
 
 	@Override
 	protected void doFilterInternal(

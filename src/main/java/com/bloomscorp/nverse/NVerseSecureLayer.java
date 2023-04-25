@@ -1,12 +1,17 @@
 package com.bloomscorp.nverse;
 
+import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
 import com.bloomscorp.pastebox.Pastebox;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @AllArgsConstructor
-public class NVerseSecureLayer<T extends NVerseTenant<E>, E extends Enum<E>> {
+public class NVerseSecureLayer<
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
+> {
 
 	public boolean initialEmbeddedCheck(T user) {
 

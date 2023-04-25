@@ -2,7 +2,7 @@ package com.bloomscorp.nverse.pojo;
 
 import java.util.List;
 
-public interface NVerseTenant<E extends Enum<E>> {
+public interface NVerseTenant<E extends Enum<E>, R extends NVerseRole<E>> {
 	Long getId();
 	String getUid();
 	String getEmail();
@@ -10,5 +10,5 @@ public interface NVerseTenant<E extends Enum<E>> {
 	boolean isActive();
 	boolean isDeleted();
 	boolean isSuspended();
-	List<NVerseRole<E>> getRoles();
+	List<R> getRoles();
 }

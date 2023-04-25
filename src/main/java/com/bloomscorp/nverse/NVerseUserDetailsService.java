@@ -2,6 +2,7 @@ package com.bloomscorp.nverse;
 
 import com.bloomscorp.hastar.NoUserFoundException;
 import com.bloomscorp.nverse.dao.NVerseTenantDAO;
+import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
 import com.bloomscorp.nverse.support.Constant;
 import lombok.AllArgsConstructor;
@@ -16,12 +17,13 @@ import java.util.ArrayList;
 
 @AllArgsConstructor
 public class NVerseUserDetailsService<
-	T extends NVerseTenant<E>,
-	E extends Enum<E>
+	T extends NVerseTenant<E, R>,
+	E extends Enum<E>,
+	R extends NVerseRole<E>
 > implements UserDetailsService {
 
 	private final NVerseEmailEncoder emailEncoder;
-	private final NVerseTenantDAO<T, E> tenantDAO;
+	private final NVerseTenantDAO<T, E, R> tenantDAO;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,7 +36,7 @@ public class NVerseUserDetailsService<
 		}
 	}
 
-	public NVerseUser<T, E> loadNVerseUserByEncryptedUsername(
+	public NVerseUser<T, E, R> loadNVerseUserByEncryptedUsername(
 		String username
 	) throws UsernameNotFoundException {
 		// TODO what happens when one valid user uses token of another valid user
