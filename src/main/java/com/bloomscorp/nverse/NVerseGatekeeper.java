@@ -20,7 +20,7 @@ public abstract class NVerseGatekeeper<
 
 	private final NVerseSecureLayer<T, E, R> secureLayer;
 
-	private boolean roleGOD(@NotNull T user) {
+	public boolean roleGOD(@NotNull T user) {
 		return user
 			.getRoles()
 			.stream()
@@ -29,7 +29,7 @@ public abstract class NVerseGatekeeper<
 			.anyMatch(e -> e.name().equals(ROLE_GOD_MODE));
 	}
 
-	private boolean roleSU(T user) {
+	public boolean roleSU(T user) {
 		return this.roleGOD(user) ||
 			user.getRoles()
 				.stream()
