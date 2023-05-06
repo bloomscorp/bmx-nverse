@@ -1,5 +1,6 @@
 package com.bloomscorp.nverse;
 
+import com.bloomscorp.nverse.esapi.NVerseESAPI;
 import org.jetbrains.annotations.NotNull;
 import org.owasp.esapi.ESAPI;
 import org.owasp.esapi.errors.ValidationException;
@@ -12,7 +13,7 @@ public class NVerseEmailValidator {
 
 	public String getValidatedEmail(@NotNull String email) {
 		try {
-			return ESAPI.validator().getValidInput(
+			return NVerseESAPI.validator().getValidInput(
 				ESAPI_VALIDATION_CONTEXT_EMAIL,
 				email.toLowerCase(),
 				ESAPI_VALIDATION_EXPRESSION_TYPE_EMAIL,

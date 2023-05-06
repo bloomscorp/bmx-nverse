@@ -33,4 +33,9 @@ public final class NVerseESAPI {
 	public static Encoder encoder() {
 		return ObjFactory.make( securityConfiguration().getEncoderImplementation(), "Encoder" );
 	}
+
+	@SuppressWarnings("deprecation")
+	public static Validator validator() {
+		return ObjFactory.make( securityConfiguration().getValidationImplementation(), "Validator" );
+	}
 }
