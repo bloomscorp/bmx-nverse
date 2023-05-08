@@ -2,13 +2,14 @@ package com.bloomscorp.nverse.sanitizer;
 
 import com.bloomscorp.hastar.CarrierException;
 import com.bloomscorp.hastar.code.ErrorCode;
-import com.bloomscorp.nverse.esapi.NVerseESAPI;
 import com.bloomscorp.nverse.support.Constant;
 import com.bloomscorp.pastebox.Pastebox;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
-import org.owasp.encoder.Encode;
+import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
+import org.springframework.web.util.HtmlUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -48,38 +49,43 @@ public abstract class NVerseSanitizer<E, R> {
 	}
 
 	private @NotNull String canonicalize(String value) {
-		return NVerseESAPI.encoder().canonicalize(value).replaceAll(
+		// TODO: bring back ESAPI once it supports Jakarta
+//		return NVerseESAPI.encoder().canonicalize(value).replaceAll(
+//			Constant.END_OF_STRING_VALUE,
+//			Constant.BLANK_STRING_VALUE
+//		);
+		return value.replaceAll(
 			Constant.END_OF_STRING_VALUE,
 			Constant.BLANK_STRING_VALUE
 		);
 	}
 
-	private String encodeHTML(String value) {
-		return Encode.forHtml(value);
+//	private String encodeHTMLContent(String value) {
+//		return Encode.forHtmlContent(value);
+//	}
+
+	private String escapeHTML(String html) {
+		return HtmlUtils.htmlEscape(html, "UTF-8");
 	}
 
-	private String encodeHTMLContent(String value) {
-		return Encode.forHtmlContent(value);
-	}
+	private String sanitizeHTML(String html) {
+		/*
+		 * https://github.com/OWASP/java-html-sanitizer
+		 * https://www.javadoc.io/doc/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer/latest/org/owasp/html/Sanitizers.html
+		 * https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/util/HtmlUtils.html
+		 * https://mvnrepository.com/artifact/com.googlecode.owasp-java-html-sanitizer/owasp-java-html-sanitizer
+		 */
 
-	private String encodeJS(String value) {
-		return Encode.forJavaScript(value);
-	}
+		PolicyFactory policy = Sanitizers.FORMATTING
+								.and(Sanitizers.BLOCKS)
+								.and(Sanitizers.IMAGES)
+								.and(Sanitizers.LINKS)
+								.and(Sanitizers.STYLES)
+								.and(Sanitizers.TABLES);
 
-	private String encodeCSS(String value) {
-		return Encode.forCssString(value);
-	}
-
-	private String encode(String value) {
-		return this.encodeHTML(
-			this.encodeHTMLContent(
-				this.encodeJS(
-					this.encodeCSS(
-						value
-					)
-				)
-			)
-		);
+		// TODO: add custom policy
+		
+		return policy.sanitize(html);
 	}
 
 	protected <O> O sanitizeObject(O object, Class<?> @NotNull ... fieldTypes) throws CarrierException {
@@ -139,7 +145,7 @@ public abstract class NVerseSanitizer<E, R> {
 	}
 
 	protected String sanitize(String value) {
-		return Pastebox.isEmptyString(value) ? Constant.BLANK_STRING_VALUE : this.encodeHTMLContent(
+		return Pastebox.isEmptyString(value) ? Constant.BLANK_STRING_VALUE : this.sanitizeHTML(
 			this.stripXSS(
 				this.canonicalize(value)
 			)
