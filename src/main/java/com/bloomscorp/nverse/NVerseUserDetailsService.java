@@ -26,7 +26,7 @@ public class NVerseUserDetailsService<
 	private final NVerseTenantDAO<T, E, R> tenantDAO;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public NVerseUser<T, E, R> loadUserByUsername(String username) throws UsernameNotFoundException {
 		// TODO: handle UsernameNotFoundException. Where is it thrown?
 		try {
 			return this.loadUserByEncryptedUsername(this.emailEncoder.encode(username));
@@ -70,7 +70,7 @@ public class NVerseUserDetailsService<
 		}
 	}
 
-	public UserDetails loadUserByEncryptedUsername(String username) throws UsernameNotFoundException {
+	public NVerseUser<T, E, R> loadUserByEncryptedUsername(String username) throws UsernameNotFoundException {
 		return this.loadNVerseUserByEncryptedUsername(username);
 	}
 
