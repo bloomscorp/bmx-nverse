@@ -15,7 +15,7 @@
 
     <groupId>com.bloomscorp</groupId>
     <artifactId>bmx-nverse</artifactId>
-    <version>0.0.28</version>
+    <version>0.0.29</version>
     <packaging>jar</packaging>
     <inceptionYear>2023</inceptionYear>
     <url>https://github.com/bloomscorp/bmx-nverse</url>
@@ -66,20 +66,6 @@
     </licenses>
 
     <dependencies>
-
-
-
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>6.0.0</version>
-            <scope>provided</scope>
-        </dependency>
-
-
-
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -153,7 +139,7 @@
         <dependency>
             <groupId>com.bloomscorp</groupId>
             <artifactId>bmx-alfred</artifactId>
-            <version>0.0.7</version>
+            <version>0.0.8</version>
         </dependency>
     </dependencies>
 
