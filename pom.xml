@@ -9,13 +9,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.0.5</version>
+        <version>3.1.2</version>
         <relativePath/>
     </parent>
 
     <groupId>com.bloomscorp</groupId>
     <artifactId>bmx-nverse</artifactId>
-    <version>0.0.29</version>
+    <version>0.0.30</version>
     <packaging>jar</packaging>
     <inceptionYear>2023</inceptionYear>
     <url>https://github.com/bloomscorp/bmx-nverse</url>
@@ -78,16 +78,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.owasp.encoder</groupId>-->
-<!--            <artifactId>encoder</artifactId>-->
-<!--            <version>1.2.3</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.owasp.esapi</groupId>-->
-<!--            <artifactId>esapi</artifactId>-->
-<!--            <version>2.5.0.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.googlecode.owasp-java-html-sanitizer</groupId>
             <artifactId>owasp-java-html-sanitizer</artifactId>
@@ -112,7 +102,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.26</version>
+            <version>1.18.28</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -124,22 +114,22 @@
         <dependency>
             <groupId>com.bloomscorp</groupId>
             <artifactId>bmx-pastebox-java</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.bloomscorp</groupId>
             <artifactId>bmx-hastar</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.bloomscorp</groupId>
             <artifactId>bmx-raintree</artifactId>
-            <version>0.0.1</version>
+            <version>0.0.5</version>
         </dependency>
         <dependency>
             <groupId>com.bloomscorp</groupId>
             <artifactId>bmx-alfred</artifactId>
-            <version>0.0.8</version>
+            <version>0.0.10</version>
         </dependency>
     </dependencies>
 
