@@ -11,4 +11,7 @@ import java.lang.annotation.Target;
 })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NVerseDomainValidated {
+	String[] headerKeys() default {};
+	String[] headerValues() default {};
+	String origin() default "";
 }
