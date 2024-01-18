@@ -10,5 +10,6 @@ public interface NVerseTenant<E extends Enum<E>, R extends NVerseRole<E>> {
 	boolean isActive();
 	boolean isDeleted();
 	boolean isSuspended();
+	NVERSE_AUTH_PROVIDER getProvider();
 	List<R> getRoles();
 }
