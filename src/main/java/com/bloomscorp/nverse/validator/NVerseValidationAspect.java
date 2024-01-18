@@ -14,8 +14,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 @Aspect
 @AllArgsConstructor
@@ -108,10 +106,17 @@ public class NVerseValidationAspect {
 	) throws Throwable {
 
 		Signature signature = joinPoint.getSignature();
+		Class<?> targetClass = joinPoint.getTarget().getClass();
 		MethodSignature methodSignature = (MethodSignature) signature;
 		Method method = methodSignature.getMethod();
 		Class<?> returnType = methodSignature.getReturnType();
-		NVerseDomainValidated domainValidatedAnnotation = method.getAnnotation(NVerseDomainValidated.class);
+//		NVerseDomainValidated domainValidatedAnnotation = method.getAnnotation(NVerseDomainValidated.class);
+		NVerseDomainValidated domainValidatedAnnotation = targetClass.getAnnotation(NVerseDomainValidated.class);
+
+		if (domainValidatedAnnotation == null) {
+			throw new RuntimeException("Cannot find @NVerseDomainValidated annotation on the class level!");
+		}
+
 		String[] headerKeys = domainValidatedAnnotation.headerKeys();
 		String[] headerValues = domainValidatedAnnotation.headerValues();
 		String origin = domainValidatedAnnotation.origin();
