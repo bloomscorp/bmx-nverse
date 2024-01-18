@@ -110,7 +110,6 @@ public class NVerseValidationAspect {
 		MethodSignature methodSignature = (MethodSignature) signature;
 		Method method = methodSignature.getMethod();
 		Class<?> returnType = methodSignature.getReturnType();
-//		NVerseDomainValidated domainValidatedAnnotation = method.getAnnotation(NVerseDomainValidated.class);
 		NVerseDomainValidated domainValidatedAnnotation = targetClass.getAnnotation(NVerseDomainValidated.class);
 
 		if (domainValidatedAnnotation == null) {
