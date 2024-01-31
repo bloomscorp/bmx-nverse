@@ -25,16 +25,20 @@ public class NVerseAuthenticationService {
         );
     }
 
-    public <U extends NVerseTenant<E, R>,
+    public <T extends NVerseTenant<E, R>,
         E extends Enum<E>,
         R extends NVerseRole<E>>
     boolean validateAuthProvider(
-        @NotNull U user,
-        NVERSE_AUTH_PROVIDER provider
+        @NotNull T tenant,
+        NVERSE_AUTH_PROVIDER provider,
+        Boolean allowUnknown
     ) {
-        return (provider != null &&
-            Pastebox.isInEnum(provider, NVERSE_AUTH_PROVIDER.class) &&
-            user.getProvider() == provider
-        );
+        if (provider == null || !Pastebox.isInEnum(provider, NVERSE_AUTH_PROVIDER.class)) return false;
+
+        if (allowUnknown) {
+            return tenant.getProvider() == provider;
+        } else {
+            return tenant.getProvider() == provider && tenant.getProvider() != NVERSE_AUTH_PROVIDER.UNKNOWN;
+        }
     }
 }
