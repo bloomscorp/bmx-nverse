@@ -108,7 +108,6 @@ public class NVerseValidationAspect {
 		Signature signature = joinPoint.getSignature();
 		Class<?> targetClass = joinPoint.getTarget().getClass();
 		MethodSignature methodSignature = (MethodSignature) signature;
-		Method method = methodSignature.getMethod();
 		Class<?> returnType = methodSignature.getReturnType();
 		NVerseDomainValidated domainValidatedAnnotation = targetClass.getAnnotation(NVerseDomainValidated.class);
 
