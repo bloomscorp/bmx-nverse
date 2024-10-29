@@ -17,8 +17,8 @@ public class NVerseSecureLayer<
 		if(user == null) return false;
 
 		final long userID = user.getId();
-		final String valveID = user.getUid();
+		final String uid = user.getUid();
 
-		return !Pastebox.isEmptyString(valveID) && NVerseValidatorUtilities.isGenericNumericIDValid(userID);
+		return !Pastebox.isEmptyString(uid) && NVerseValidatorUtilities.isGenericNumericIDValid(userID);
 	}
 }

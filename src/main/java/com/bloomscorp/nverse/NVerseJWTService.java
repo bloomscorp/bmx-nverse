@@ -25,9 +25,8 @@ public class NVerseJWTService<
 	R extends NVerseRole<E>
 > {
 
-	private static final long JWT_TOKEN_VALIDITY = 168 * 60 * 60000;
-
 	private final String secret;
+	private final long jwtTokenValidity;
 
 	public String generateToken(@NotNull NVerseUser<T, E, R> user) {
 		return this.generateToken(new HashMap<>(), user.getUsername());
@@ -76,7 +75,7 @@ public class NVerseJWTService<
 			.setClaims(claims)
 			.setSubject(subject)
 			.setIssuedAt(new Date(System.currentTimeMillis()))
-			.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
+			.setExpiration(new Date(System.currentTimeMillis() + this.jwtTokenValidity))
 			.signWith(this.getSigningKey(), SignatureAlgorithm.HS512)
 			.compact();
 	}
