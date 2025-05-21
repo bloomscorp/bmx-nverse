@@ -52,7 +52,7 @@ public class NVerseJWTService<
 			.getBody();
 	}
 
-	private <T> T getClaimFromToken(String token, @NotNull Function<Claims, T> claimsResolver) {
+	private <X> X getClaimFromToken(String token, @NotNull Function<Claims, X> claimsResolver) {
 		return claimsResolver.apply(this.getAllClaimsFromToken(token));
 	}
 
