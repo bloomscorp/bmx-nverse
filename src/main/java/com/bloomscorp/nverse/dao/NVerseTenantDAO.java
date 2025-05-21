@@ -2,7 +2,6 @@ package com.bloomscorp.nverse.dao;
 
 import com.bloomscorp.nverse.pojo.NVerseRole;
 import com.bloomscorp.nverse.pojo.NVerseTenant;
-import lombok.NonNull;
 
 public interface NVerseTenantDAO<
 	T extends NVerseTenant<E, R>,
@@ -12,6 +11,6 @@ public interface NVerseTenantDAO<
 	boolean verifyUniqueEmail(String email, boolean encoded);
 	boolean verifyUniqueContactNumber(String contactNumber);
 	T retrieveUserByEmail(String username);
-	int addNewTenant(T user, E userRole);
-	int addNewTenant(T user, E userRole, boolean verifyUniqueEmail, boolean verifyUniqueContactNumber);
+	int addNewTenant(T user, R userRole);
+	int addNewTenant(T user, R userRole, boolean verifyUniqueEmail, boolean verifyUniqueContactNumber);
 }
