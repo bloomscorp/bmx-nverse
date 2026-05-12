@@ -29,6 +29,37 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * A {@link OncePerRequestFilter} positioned at the front of the security filter chain
+ * that catches all security- and authentication-related exceptions thrown by downstream
+ * filters and converts them into structured JSON failure responses.
+ *
+ * <p>This filter acts as a unified error boundary for the entire NVerse filter stack.
+ * It wraps the downstream {@code filterChain.doFilter} call in a {@code try/catch}
+ * block covering the full set of exception types that the NVerse filters and Spring
+ * Security may throw. Each exception type maps to a specific human-readable message
+ * constant from {@link Message} or directly from the exception, written as a JSON
+ * response via {@link RainTree}.</p>
+ *
+ * <p>All caught exceptions are also asynchronously logged through the {@link CronManager}
+ * using {@link com.bloomscorp.alfred.cron.CronManager#scheduleExceptionLogTask}. In
+ * non-production mode ({@code isProduction = false}) the exception stack trace is also
+ * printed to standard error for local debugging.</p>
+ *
+ * <p>This filter must be registered <em>before</em> {@link NVerseRequestFilter} in the
+ * security filter chain — see {@link NVerseSecurityFilterChain#filterChain}.</p>
+ *
+ * @param <B> the concrete {@link LogBook} subclass used by the application.
+ * @param <L> the concrete log JPA entity type.
+ * @param <A> the concrete authentication log JPA entity type.
+ * @param <T> the concrete tenant type, must implement {@link NVerseTenant}.
+ * @param <E> the role enum type.
+ * @param <R> the concrete role entity type, must implement {@link NVerseRole}.
+ *
+ * @see NVerseRequestFilter
+ * @see NVerseSecurityFilterChain
+ * @see Message
+ */
 @AllArgsConstructor
 public class NVerseExceptionHandlerFilter<
 	B extends LogBook<L, A, T, E, R>,
@@ -43,6 +74,32 @@ public class NVerseExceptionHandlerFilter<
 	private final CronManager<B, L, A, T, E, R> cron;
 	private final boolean isProduction;
 
+	/**
+	 * Executes the filter chain and intercepts any authentication or authorization
+	 * exception that propagates, converting it to a {@code 401 Unauthorized} JSON response.
+	 *
+	 * <p>The exception-to-message mapping is as follows:</p>
+	 * <ul>
+	 *   <li>{@link AuthorizationException} → {@code ex.getMessage()} (resolved from the error code).</li>
+	 *   <li>{@link CarrierException} → {@code ex.getMessage()} (resolved from the wrapped error code).</li>
+	 *   <li>{@link IllegalArgumentException} → {@link Message#ILLEGAL_ARGUMENTS}.</li>
+	 *   <li>{@link ExpiredJwtException} → {@link Message#EXPIRED_CREDENTIALS}.</li>
+	 *   <li>{@link ServletException} → {@link Message#SERVLET_FAILURE}.</li>
+	 *   <li>{@link IOException} → {@link Message#IO_FAILURE}.</li>
+	 *   <li>{@link BadCredentialsException} → {@link Message#BAD_CREDENTIALS}.</li>
+	 *   <li>{@link DisabledException} → {@link Message#ACCOUNT_DISABLED}.</li>
+	 *   <li>{@link InternalAuthenticationServiceException} → {@link Message#INTERNAL_AUTHENTICATION_SERVICE_FAILURE}.</li>
+	 *   <li>{@link MalformedJwtException} → {@link Message#MALFORMED_CREDENTIALS}.</li>
+	 *   <li>{@link LockedException} → {@link Message#USER_ACCOUNT_LOCKED}.</li>
+	 *   <li>{@link UsernameNotFoundException} → {@link Message#USERNAME_NOT_FOUND}.</li>
+	 *   <li>Any other {@link Exception} → {@link RainTree#failureResponse()} generic message.</li>
+	 * </ul>
+	 *
+	 * @param httpServletRequest  the incoming HTTP request.
+	 * @param httpServletResponse the HTTP response to write the error JSON body to.
+	 * @param filterChain         the remainder of the filter chain.
+	 * @throws IOException if writing the error response body fails.
+	 */
 	@Override
 	protected void doFilterInternal(
 		@NotNull HttpServletRequest httpServletRequest,
@@ -162,6 +219,13 @@ public class NVerseExceptionHandlerFilter<
 		}
 	}
 
+	/**
+	 * Writes a {@code 401 Unauthorized} JSON response with the given message body.
+	 *
+	 * @param response the {@link HttpServletResponse} to write to; must not be {@code null}.
+	 * @param message  the JSON string produced by {@link RainTree} to use as the response body.
+	 * @throws IOException if writing to the response output stream fails.
+	 */
 	private void prepareResponseForException(@NotNull HttpServletResponse response, String message) throws IOException {
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 		response.setContentType(Constant.RESPONSE_TYPE_APPLICATION_JSON);
